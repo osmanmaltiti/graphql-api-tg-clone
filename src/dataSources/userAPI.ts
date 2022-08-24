@@ -18,7 +18,7 @@ export class UserAPI {
 
       return await this.updateProfile(newUser);
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -40,7 +40,7 @@ export class UserAPI {
 
       return user;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -58,7 +58,7 @@ export class UserAPI {
 
       return user;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -70,7 +70,7 @@ export class UserAPI {
         },
       });
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -78,7 +78,7 @@ export class UserAPI {
     try {
       return await prisma.user.findMany();
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 }

@@ -20,7 +20,7 @@ class ChatAPI {
 
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -39,7 +39,7 @@ class ChatAPI {
 
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -86,7 +86,7 @@ class ChatAPI {
 
       return newChatData;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -101,7 +101,7 @@ class ChatAPI {
 
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -120,7 +120,7 @@ class ChatAPI {
 
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -138,7 +138,7 @@ class ChatAPI {
 
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -159,7 +159,7 @@ class ChatAPI {
 
       return response;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 }

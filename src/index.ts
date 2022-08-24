@@ -51,12 +51,17 @@ const io = new Server(httpServer, {
 io.on('connection', (socket) => {
   const graphqlServer = createServer({ schema, context: { socket } });
   app.use('/graphql', graphqlServer);
+
   console.log(`A connection with id ${socket.id} has been created`);
 
   socket.emit('connected', socket.id);
 
   socket.on('join-room', (data: any) => {
     socket.join(data);
+  });
+
+  socket.on('disconnect', () => {
+    socket.disconnect(true);
   });
 });
 

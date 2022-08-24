@@ -1,14 +1,15 @@
 export const typeDefs = `
   type Query {
     getUsers: [User!]
-    user(id: ID!): User
+    loginUser(data: LoginData!): User!
+    user(id: ID!): User!
     getChat(id: ID!): Chat!
   }
-
+  
   type Mutation {
-    createUser(data: UserData): User!
-    openChat(data: ChatMeta): Chat!
-    createMessage(message: MessageData): Chatdata!
+    createUser(data: UserData!): User!
+    openChat(data: ChatMeta!): Chat!
+    createMessage(message: MessageData!): Chatdata!
   }
 
   type User {
@@ -49,6 +50,11 @@ export const typeDefs = `
     fullname: String!
     number: Int!
     profile: String!
+    password: String!
+  }
+
+  input LoginData {
+    number: Int!
     password: String!
   }
 

@@ -15,7 +15,7 @@ class ChatAPI {
       });
 
       if (!response) {
-        return this.createChat(chatMeta);
+        return await this.createChat(chatMeta);
       }
 
       return response;
@@ -61,8 +61,10 @@ class ChatAPI {
 
         if (!ack) throw 'Failed to create message';
 
-        socket.emit('update', 'new message');
-        socket.to(data.combinedUserIds).emit('update', 'new message');
+        socket.emit('update', await this.updateChat(data.combinedUserIds));
+        socket
+          .to(data.combinedUserIds)
+          .emit('update', await this.updateChat(data.combinedUserIds));
 
         return chatData;
       }
@@ -77,9 +79,12 @@ class ChatAPI {
 
       this.createMessage(newChatData, data);
 
-      socket.emit('update', 'new message');
-      socket.broadcast.to(data.combinedUserIds).emit('update', 'new message');
-      return chatData;
+      socket.emit('update', await this.updateChat(data.combinedUserIds));
+      socket
+        .to(data.combinedUserIds)
+        .emit('update', await this.updateChat(data.combinedUserIds));
+
+      return newChatData;
     } catch (error) {
       console.log(error);
     }
@@ -128,6 +133,27 @@ class ChatAPI {
         },
         orderBy: {
           time: 'asc',
+        },
+      });
+
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async updateChat(combinedUserIds: string) {
+    try {
+      const response = await prisma.chat.findFirst({
+        where: {
+          combinedUserIds,
+        },
+        include: {
+          data: {
+            include: {
+              messages: true,
+            },
+          },
         },
       });
 

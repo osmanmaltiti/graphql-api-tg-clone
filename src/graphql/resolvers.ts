@@ -7,12 +7,17 @@ export const resolvers = {
     getUsers: async (parent: any, args: any, ctx: any, info: any) => {
       return await UserAPI.getUsers();
     },
+    loginUser: async (parent: any, args: any, ctx: any, info: any) => {
+      return await UserAPI.loginUser(args.data);
+    },
+    user: async (parent: any, args: any, ctx: any, info: any) => {
+      return await UserAPI.getUser(args.id);
+    },
     getChat: async (parent: any, args: any, ctx: any, info: any) => {
       const data = {
         combinedUserIds: args.id,
       };
       const response = await ChatAPI.openChat(data);
-      console.log(response);
       return response;
     },
   },

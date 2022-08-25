@@ -114,6 +114,7 @@ class ChatAPI {
           chatDataId: chatdata.id,
           message: data.message,
           from: data.from,
+          file: data.file,
           time: String(Date.now()),
         },
       });

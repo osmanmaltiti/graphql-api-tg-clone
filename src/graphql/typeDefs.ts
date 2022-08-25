@@ -43,6 +43,7 @@ export const typeDefs = `
     from: String!
     time: String!
     message: String!
+    file: String!
     chatData: Chatdata
   }
 
@@ -66,6 +67,7 @@ export const typeDefs = `
   input MessageData {
     chatId: String!
     message: String!
+    file: String!
     from: String!
     combinedUserIds: String!
   }

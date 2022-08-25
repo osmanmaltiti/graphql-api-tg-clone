@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Application, Request, Response } from 'express';
-import { existsSync, mkdirSync } from 'fs';
 import { createServer } from 'graphql-yoga';
 import http from 'http';
 import morgan from 'morgan';
@@ -10,6 +9,7 @@ import multer from 'multer';
 import path from 'path';
 import { Server } from 'socket.io';
 import schema from './graphql/schema';
+import { profileStorage } from './multer/multer';
 
 dotenv.config({
   path: './.env',
@@ -20,25 +20,11 @@ const port = String(process.env.PORT);
 
 export const prisma = new PrismaClient();
 
-const fileStorage = multer.diskStorage({
-  destination(_, __, callback) {
-    const profilePath = path.resolve(__dirname, `../public/profile`);
-
-    if (!existsSync(profilePath)) mkdirSync(profilePath);
-
-    callback(null, profilePath);
-  },
-  filename(req, _, callback) {
-    const { id } = req.headers;
-    callback(null, `profile-${id}`);
-  },
-});
-
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(multer({ storage: fileStorage }).single('profile'));
-app.use(express.static(path.join(__dirname, '../public/profile')));
+app.use(multer({ storage: profileStorage }).single('image'));
+app.use(express.static(path.join(__dirname, '../public')));
 
 const httpServer = http.createServer(app);
 
@@ -65,7 +51,7 @@ io.on('connection', (socket) => {
   });
 });
 
-app.post('/upload_pfp', (req: Request, res: Response) => {
+app.post('/upload', (req: Request, res: Response) => {
   const { file } = req;
 
   if (file) {

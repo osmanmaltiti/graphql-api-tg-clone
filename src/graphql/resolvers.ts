@@ -20,6 +20,9 @@ export const resolvers = {
       const response = await ChatAPI.openChat(data);
       return response;
     },
+    getLastMessage: async (parent: any, args: any, ctx: any, info: any) => {
+      return await ChatAPI.getLastMessages(args.data);
+    },
   },
   Mutation: {
     createUser: async (parent: any, args: any, ctx: any, info: any) => {

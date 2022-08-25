@@ -4,6 +4,7 @@ export const typeDefs = `
     loginUser(data: LoginData!): User!
     user(id: ID!): User!
     getChat(id: ID!): Chat!
+    getLastMessage(data: String!): Messages!
   }
   
   type Mutation {

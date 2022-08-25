@@ -77,7 +77,9 @@ class ChatAPI {
         },
       });
 
-      this.createMessage(newChatData, data);
+      const ack = await this.createMessage(newChatData, data);
+
+      if (!ack) throw 'Failed to create message';
 
       socket.emit('update', await this.updateChat(data.combinedUserIds));
       socket
@@ -143,6 +145,48 @@ class ChatAPI {
     }
   }
 
+  // GET LAST MESSAGE
+  async getLastMessages(id: string) {
+    try {
+      const response = await prisma.chat.findFirst({
+        where: {
+          combinedUserIds: id,
+        },
+        include: {
+          data: {
+            include: {
+              messages: {
+                select: {
+                  from: true,
+                  time: true,
+                  file: true,
+                  message: true,
+                },
+                orderBy: {
+                  time: 'desc',
+                },
+              },
+            },
+            orderBy: {
+              date: 'desc',
+            },
+          },
+        },
+      });
+
+      if (response) {
+        const [target, ...rest] = response.data;
+        const { messages } = target;
+        const [targetMessage, ...restOfMessage] = messages;
+
+        return targetMessage;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // UPDATE CHAT
   async updateChat(combinedUserIds: string) {
     try {
       const response = await prisma.chat.findFirst({

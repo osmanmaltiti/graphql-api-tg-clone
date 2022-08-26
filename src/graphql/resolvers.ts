@@ -21,7 +21,8 @@ export const resolvers = {
       return response;
     },
     getLastMessage: async (parent: any, args: any, ctx: any, info: any) => {
-      return await ChatAPI.getLastMessages(args.data);
+      const res = await ChatAPI.getLastMessages(args.data);
+      return res;
     },
   },
   Mutation: {

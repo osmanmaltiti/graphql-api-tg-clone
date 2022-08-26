@@ -61,10 +61,14 @@ class ChatAPI {
 
         if (!ack) throw 'Failed to create message';
 
-        socket.emit('update', await this.updateChat(data.combinedUserIds));
-        socket
-          .to(data.combinedUserIds)
-          .emit('update', await this.updateChat(data.combinedUserIds));
+        socket.emit('update', {
+          chat: await this.updateChat(data.combinedUserIds),
+          lastMessage: await this.getLastMessages(data.combinedUserIds),
+        });
+        socket.to(data.combinedUserIds).emit('update', {
+          chat: await this.updateChat(data.combinedUserIds),
+          lastMessage: await this.getLastMessages(data.combinedUserIds),
+        });
 
         return chatData;
       }
@@ -81,10 +85,14 @@ class ChatAPI {
 
       if (!ack) throw 'Failed to create message';
 
-      socket.emit('update', await this.updateChat(data.combinedUserIds));
-      socket
-        .to(data.combinedUserIds)
-        .emit('update', await this.updateChat(data.combinedUserIds));
+      socket.emit('update', {
+        chat: await this.updateChat(data.combinedUserIds),
+        lastMessage: await this.getLastMessages(data.combinedUserIds),
+      });
+      socket.to(data.combinedUserIds).emit('update', {
+        chat: await this.updateChat(data.combinedUserIds),
+        lastMessage: await this.getLastMessages(data.combinedUserIds),
+      });
 
       return newChatData;
     } catch (error) {
